@@ -9,11 +9,11 @@ namespace ProAgil.WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EventoController : ControllerBase
+    public class PalestranteController : ControllerBase
     {
         private readonly IProAgilRespository _repo;
 
-        public EventoController(IProAgilRespository repo)
+        public PalestranteController(IProAgilRespository repo)
         {
             _repo = repo;
         }
@@ -23,7 +23,7 @@ namespace ProAgil.WebAPI.Controllers
         {
             try
             {
-                var results = await _repo.GetAllEventoAsync(true);
+                var results = await _repo.GetAllPalestranteAsync(true);
                 return Ok(results);
             }
             catch (Exception)
@@ -33,12 +33,12 @@ namespace ProAgil.WebAPI.Controllers
             
         }
 
-        [HttpGet("{EventoId}")]
-        public async Task<IActionResult> Get(int EventoId)
+        [HttpGet("{PalestranteId}")]
+        public async Task<IActionResult> Get(int PalestranteId)
         {
             try
             {
-                var results = await _repo.GetEventoAsyncById(EventoId, true);
+                var results = await _repo.GetPalestranteAsyncById(PalestranteId, true);
                 return Ok(results);
             }
             catch (Exception)
@@ -48,12 +48,12 @@ namespace ProAgil.WebAPI.Controllers
             
         }
 
-        [HttpGet("getByTema/{tema}")]
-        public async Task<IActionResult> Get(string tema)
+        [HttpGet("getByNome/{nome}")]
+        public async Task<IActionResult> Get(string nome)
         {
             try
             {
-                var results = await _repo.GetAllEventoAsyncByTema(tema, true);
+                var results = await _repo.GetAllPalestranteAsyncByName(nome, true);
                 return Ok(results);
             }
             catch (Exception)
@@ -64,14 +64,14 @@ namespace ProAgil.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Evento model)
+        public async Task<IActionResult> Post(Palestrante model)
         {
             try
             {
                 _repo.Add(model);
                 if (await _repo.SaveChangesAsync())
                 {
-                    return Created($"/evento/{model.Id}", model);
+                    return Created($"/palestrante/{model.Id}", model);
                 }
                 
             }
@@ -84,11 +84,11 @@ namespace ProAgil.WebAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put(int EventoId, Evento model)
+        public async Task<IActionResult> Put(int PalestranteId, Palestrante model)
         {
             try
             {
-                var evento = await _repo.GetEventoAsyncById(EventoId,false);
+                var evento = await _repo.GetPalestranteAsyncById(PalestranteId, false);
 
                 if (evento == null)
                 {
@@ -98,7 +98,7 @@ namespace ProAgil.WebAPI.Controllers
                 _repo.Update(model);
                 if (await _repo.SaveChangesAsync())
                 {
-                    return Created($"/evento/{model.Id}", model);
+                    return Created($"/palestrante/{model.Id}", model);
                 }
                 
             }
@@ -111,18 +111,18 @@ namespace ProAgil.WebAPI.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(int EventoId)
+        public async Task<IActionResult> Delete(int PalestranteId)
         {
             try
             {
-                var evento = await _repo.GetEventoAsyncById(EventoId,false);
+                var palestrante = await _repo.GetPalestranteAsyncById(PalestranteId,false);
 
-                if (evento == null)
+                if (palestrante == null)
                 {
                     return NotFound();
                 }
                 
-                _repo.Delete(evento);
+                _repo.Delete(palestrante);
                 if (await _repo.SaveChangesAsync())
                 {
                     return Ok();

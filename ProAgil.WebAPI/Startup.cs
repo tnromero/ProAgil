@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using ProAgil.WebAPI.Data;
+using ProAgil.Repository;
 
 namespace ProAgil.WebAPI
 {
@@ -20,6 +20,7 @@ namespace ProAgil.WebAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            //System.Console.Write($"\n\n Cnn={Configuration.GetConnectionString("DefaultConnection")} \n\n");
         }
 
         public IConfiguration Configuration { get; }
@@ -27,10 +28,11 @@ namespace ProAgil.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            System.Console.Write($"\n\n Cnn={Configuration.GetConnectionString("DefaultConnection")} \n\n");
-            services.AddDbContext<DataContext>(
+            //System.Console.Write($"\n\n Cnn={Configuration.GetConnectionString("DefaultConnection")} \n\n");
+            services.AddDbContext<ProAgilContext>(
                 x => x.UseSqlite("Data Source=ProAgil.db")
             );
+            services.AddScoped<IProAgilRespository, ProAgilRepository>();
             services.AddControllers();
             services.AddCors();
         }
